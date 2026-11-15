@@ -1,0 +1,30 @@
+# Todo push numa branch de sessão (claude/...) entra na main sozinho.
+# Substitui o "PR + merge" manual no fim de cada sessão (mesmo arranjo da rotina, aprovado em 07/11/2026).
+name: merge-automatico
+
+on:
+  push:
+    branches: ["claude/**"]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: merge-main
+  cancel-in-progress: false
+
+jobs:
+  merge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Merge da branch na main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin "$GITHUB_REF_NAME"
+          git merge --no-ff --no-edit -m "Merge automático de $GITHUB_REF_NAME" "origin/$GITHUB_REF_NAME"
+          git push origin main

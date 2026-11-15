@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && { git fetch -q origin main 2>&1 && { git merge --no-edit -q origin/main 2>&1 || { git merge --abort 2>/dev/null; echo \"Aviso: merge da main falhou (conflito); resolver antes de seguir.\"; }; } || echo \"Aviso: git fetch falhou; usando os arquivos locais.\"; } ; python3 scripts/status.py 2>&1 || true",
+            "timeout": 60,
+            "statusMessage": "Sincronizando com a main e rodando status.py..."
+          }
+        ]
+      }
+    ]
+  }
+}

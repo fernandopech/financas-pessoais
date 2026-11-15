@@ -1,0 +1,6 @@
+*.epub
+*.pdf
+__pycache__/
+.DS_Store
+.env*
+dados/brutos/
